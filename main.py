@@ -23,7 +23,7 @@ def insert_on_blob(person_name: str, image):
 
 
 def normalize_image(image):
-    normalized_image = tf.keras.utils.load_img(BytesIO(image.read()), target_size = (225, 225))
+    normalized_image = tf.keras.utils.load_img(BytesIO(image.read()), target_size = (224, 224))
     normalized_image = tf.keras.utils.img_to_array(normalized_image)
     normalized_image = np.expand_dims(normalized_image, axis = 0)
     return normalized_image
