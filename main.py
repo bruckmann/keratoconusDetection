@@ -1,7 +1,8 @@
 import uuid
 import os
 
-
+import numpy as np
+import tensorflow as tf
 from azure.storage.blob import BlobClient
 from flask import Flask, request
 
@@ -20,13 +21,17 @@ def insert_on_blob(person_name: str, image):
     return name_to_save
 
 
-
+def normalize_image(image):
+    normalized_image = tf.keras.utils.load_img(image, target_size = (225, 225))
+    normalized_image = tf.keras.utils.img_to_array(normalized_image)
+    normalized_image = np.expand_dims(normalized_image, axis = 0)
+    return normalized_image
 
 @app.route('/predict/', methods=['POST'])
 async def predict():
     image = request.files.get('image')
     name = request.form.get('name')
-    file_name_on_blob = insert_on_blob(name, image)
+    print(normalize_image(image))
     return "inserted"
 
 @app.route('/upload/', methods=['GET'])
@@ -34,4 +39,4 @@ def predict_version():
     return "1.0.0"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=105)
+    app.run(host='0.0.0.0', port=3000)
