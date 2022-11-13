@@ -23,16 +23,22 @@ def insert_on_blob(person_name: str, image):
 
 
 def normalize_image(image):
-    normalized_image = tf.keras.utils.load_img(BytesIO(image), target_size = (225, 225))
+    normalized_image = tf.keras.utils.load_img(BytesIO(image.read()), target_size = (225, 225))
     normalized_image = tf.keras.utils.img_to_array(normalized_image)
     normalized_image = np.expand_dims(normalized_image, axis = 0)
     return normalized_image
+
+def make_prediction(normalized_image):
+    model = tf.keras.models.load_model("./model/EyeScan.pb")
+    prediction = model.predict(normalized_image)
+    return prediction
 
 @app.route('/predict/', methods=['POST'])
 async def predict():
     image = request.files.get('image')
     name = request.form.get('name')
-    print(normalize_image(image))
+    prediction_result = make_prediction(normalize_image(image))
+    print(prediction_result)
     return "inserted"
 
 @app.route('/upload/', methods=['GET'])
