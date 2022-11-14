@@ -9,7 +9,7 @@ def normalize_image(image):
     normalized_image = np.expand_dims(normalized_image, axis = 0)
     return normalized_image
 
-def make_prediction(normalized_image):
+async def make_prediction(normalized_image):
     model = tf.keras.models.load_model("./prediction/model/EyeScan.h5")
-    prediction = model.predict(normalized_image)
+    prediction = await model.predict(normalized_image)
     return prediction
