@@ -5,7 +5,7 @@ from io import BytesIO
 import numpy as np
 import tensorflow as tf
 from azure.storage.blob import BlobClient
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -37,9 +37,9 @@ def make_prediction(normalized_image):
 async def predict():
     image = request.files.get('image')
     name = request.form.get('name')
+    age = request.form.get('age')
     prediction_result = make_prediction(normalize_image(image))
-    print(prediction_result)
-    return "inserted"
+    return jsonify({'prediction_result': prediction_result})
 
 @app.route('/upload/', methods=['GET'])
 def predict_version():
