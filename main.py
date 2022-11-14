@@ -23,18 +23,12 @@ def insert_on_blob(person_name: str, image):
     blob.upload_blob(data=image)
     return name_to_save
 
-
-def make_prediction(normalized_image):
-    model = tf.keras.models.load_model("./model/EyeScan.h5")
-    prediction = model.predict(normalized_image)
-    return prediction
-
 @app.route('/predict/', methods=['POST'])
 async def predict():
     image = request.files.get('image')
     name = request.form.get('name')
     age = request.form.get('age')
-    prediction_result = make_prediction(model.normalize_image(image))
+    prediction_result = model.make_prediction(model.normalize_image(image))
     return jsonify({'prediction_result': prediction_result})
 
 @app.route('/upload/', methods=['GET'])
