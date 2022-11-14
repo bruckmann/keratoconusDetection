@@ -17,9 +17,6 @@ connection_string = os.getenv("CONNECTION_STRING")
 
 @app.route('/predict/', methods=['POST'])
 async def predict():
-
-    print(request.json)
-
     image = request.files.get('image')
     name = request.form.get('name')
     age = request.form.get('age')
