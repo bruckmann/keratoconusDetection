@@ -7,7 +7,7 @@ import tensorflow as tf
 from azure.storage.blob import BlobClient
 from flask import Flask, request, jsonify
 
-import model
+import prediction as pd
 
 app = Flask(__name__)
 
@@ -28,8 +28,8 @@ async def predict():
     image = request.files.get('image')
     name = request.form.get('name')
     age = request.form.get('age')
-    prediction_result = model.make_prediction(model.normalize_image(image))
-    return jsonify({'prediction_result': prediction_result})
+    prediction_result = pd.make_prediction(pd.normalize_image(image))
+    return jsonify({'prediction_result': prediction_result[0][0]})
 
 @app.route('/upload/', methods=['GET'])
 def predict_version():
