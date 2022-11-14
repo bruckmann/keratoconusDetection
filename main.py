@@ -7,6 +7,8 @@ import tensorflow as tf
 from azure.storage.blob import BlobClient
 from flask import Flask, request, jsonify
 
+import model
+
 app = Flask(__name__)
 
 container_name = os.getenv("CONTAINER_NAME")
@@ -22,12 +24,6 @@ def insert_on_blob(person_name: str, image):
     return name_to_save
 
 
-def normalize_image(image):
-    normalized_image = tf.keras.utils.load_img(BytesIO(image.read()), target_size = (224, 224))
-    normalized_image = tf.keras.utils.img_to_array(normalized_image)
-    normalized_image = np.expand_dims(normalized_image, axis = 0)
-    return normalized_image
-
 def make_prediction(normalized_image):
     model = tf.keras.models.load_model("./model/EyeScan.h5")
     prediction = model.predict(normalized_image)
@@ -38,7 +34,7 @@ async def predict():
     image = request.files.get('image')
     name = request.form.get('name')
     age = request.form.get('age')
-    prediction_result = make_prediction(normalize_image(image))
+    prediction_result = make_prediction(model.normalize_image(image))
     return jsonify({'prediction_result': prediction_result})
 
 @app.route('/upload/', methods=['GET'])
