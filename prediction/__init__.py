@@ -11,5 +11,5 @@ def normalize_image(image):
 
 async def make_prediction(normalized_image):
     model = tf.keras.models.load_model("./prediction/model/EyeScan.h5")
-    prediction = await model.predict(normalized_image)
+    prediction = model.predict(normalized_image)
     return prediction

@@ -1,14 +1,18 @@
-from io import BytesIO
+import os
 
-import numpy as np
-import tensorflow as tf
 from azure.storage.blob import BlobClient
 from flask import Flask, jsonify, request
+from azure.storage.blob import BlobClient
 
 import prediction as pd
-import blob as bb
+import utils
 
 app = Flask(__name__)
+
+
+container_name = os.getenv("CONTAINER_NAME")
+connection_string = os.getenv("CONNECTION_STRING")
+
 
 @app.route('/predict/', methods=['POST'])
 async def predict():
@@ -17,9 +21,11 @@ async def predict():
     age = request.form.get('age')
 
     normalized_image = pd.normalize_image(image)
-    prediction_result = await pd.make_prediction(normalized_image)
+    prediction_result = pd.make_prediction(normalized_image)
   
-    file_name_on_blob = await bb.insert_on_blob(name, image)
+    file_name_on_blob = utils.format_file_name(name)
+    blob = BlobClient.from_connection_string(conn_str=connection_string, container_name=container_name, blob_name=file_name_on_blob)
+    blob.upload_blob(data=image)
     return jsonify({'prediction_result': str(prediction_result[0][0]), 'file_name_on_blob': file_name_on_blob})
 
 @app.route('/upload/', methods=['GET'])
