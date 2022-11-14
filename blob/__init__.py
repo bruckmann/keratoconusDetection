@@ -1,3 +1,5 @@
+import os
+
 from azure.storage.blob import BlobClient
 
 import utils
