@@ -31,7 +31,8 @@ def insert(name, age, prediction_result, prediction_classification):
 
         query = "INSERT INTO prediction_results (prediction_result, classification_result, patient_name, patient_age) VALUES ('{pd_result}', '{pd_class}', '{name}', '{age}')".format(
             pd_result=prediction_result[0][0], pd_class=prediction_classification, name=name, age=age)
-        client.execute(query)
+        result = client.execute(query)
+        print(result)
     except (Exception, Error) as error:
         print("Error while connecting to PostgreSQL", error)
     finally:
