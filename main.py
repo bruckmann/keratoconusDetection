@@ -21,6 +21,8 @@ async def predict():
     name = request.form.get('name')
     age = request.form.get('age')
 
+    print(name)
+
     normalized_image = pd.normalize_image(image)
     prediction_result = pd.make_prediction(normalized_image)
     classification_result = pd.classify(prediction_result)
