@@ -5,7 +5,8 @@ from flask import Flask, jsonify, request
 from azure.storage.blob import BlobClient
 
 import prediction as pd
-import utils
+import db
+
 
 app = Flask(__name__)
 
@@ -22,11 +23,13 @@ async def predict():
 
     normalized_image = pd.normalize_image(image)
     prediction_result = pd.make_prediction(normalized_image)
-  
-    file_name_on_blob = utils.format_file_name(name)
-    blob = BlobClient.from_connection_string(conn_str=connection_string, container_name=container_name, blob_name=file_name_on_blob)
-    blob.upload_blob(data=image)
-    return jsonify({'prediction_result': str(prediction_result[0][0]), 'file_name_on_blob': file_name_on_blob})
+    classification_result = pd.classify(prediction_result)
+
+    try:
+        db.insert(name, age, prediction_result, classification_result)
+        return jsonify({'prediction_result': str(prediction_result[0][0]), 'classification_result': classification_result})
+    except Exception as e:
+        print(e)
 
 @app.route('/upload/', methods=['GET'])
 def predict_version():
