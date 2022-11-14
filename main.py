@@ -1,14 +1,11 @@
-import uuid
-import os
 from io import BytesIO
 
 import numpy as np
 import tensorflow as tf
 from azure.storage.blob import BlobClient
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 
 import prediction as pd
-import blob as bb
 
 app = Flask(__name__)
 
@@ -19,10 +16,9 @@ async def predict():
     age = request.form.get('age')
 
     normalized_image = pd.normalize_image(image)
-    file_name_on_blob = await bb.insert_on_blob(name, image)
     prediction_result = pd.make_prediction(normalized_image)
   
-    return jsonify({'prediction_result': str(prediction_result[0][0]), 'nameOnBlob': file_name_on_blob})
+    return jsonify({'prediction_result': str(prediction_result[0][0])})
 
 @app.route('/upload/', methods=['GET'])
 def predict_version():
