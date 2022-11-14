@@ -6,6 +6,7 @@ from azure.storage.blob import BlobClient
 from flask import Flask, jsonify, request
 
 import prediction as pd
+import blob as bb
 
 app = Flask(__name__)
 
@@ -18,7 +19,8 @@ async def predict():
     normalized_image = pd.normalize_image(image)
     prediction_result = pd.make_prediction(normalized_image)
   
-    return jsonify({'prediction_result': str(prediction_result[0][0])})
+    file_name_on_blob = bb.insert_on_blob(name, image)
+    return jsonify({'prediction_result': str(prediction_result[0][0]), 'file_name_on_blob': file_name_on_blob})
 
 @app.route('/upload/', methods=['GET'])
 def predict_version():
