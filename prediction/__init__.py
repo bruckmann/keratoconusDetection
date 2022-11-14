@@ -10,6 +10,6 @@ def normalize_image(image):
     return normalized_image
 
 def make_prediction(normalized_image):
-    model = tf.keras.models.load_model("./model/EyeScan.h5")
+    model = tf.keras.models.load_model("./prediction/model/EyeScan.h5")
     prediction = model.predict(normalized_image)
     return prediction
