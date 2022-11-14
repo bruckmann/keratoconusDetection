@@ -12,11 +12,11 @@ database = os.getenv("POSTGRES_DB")
 
 def db_connect():
     try:
-        connection = psycopg2.connect(user="postgres",
-                                      password="pynative@#29",
-                                      host="127.0.0.1",
-                                      port="5432",
-                                      database="postgres_db")
+        connection = psycopg2.connect(user=user,
+                                      password=password,
+                                      host=host,
+                                      port=port,
+                                      database=database)
 
         client = connection.cursor()
         print("Connection stablished")
