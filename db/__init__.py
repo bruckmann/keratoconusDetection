@@ -29,7 +29,7 @@ def insert(name, age, prediction_result, prediction_classification):
     try:
         client = db_connect()
 
-        query = "INSERT INTO prediction_results (prediction_result, classification_result, patient_name, patient_age) VALUES ({pd_result}, {pd_class}, {name}, {age})".format(
+        query = "INSERT INTO prediction_results (prediction_result, classification_result, patient_name, patient_age) VALUES ('{pd_result}', '{pd_class}', '{name}', '{age}')".format(
             pd_result=prediction_result[0][0], pd_class=prediction_classification, name=name, age=age)
         client.execute(query)
     except (Exception, Error) as error:
