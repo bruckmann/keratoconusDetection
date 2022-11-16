@@ -34,7 +34,6 @@ def insert(name, age, prediction_result, prediction_classification, file_name):
             pd_result=prediction_result[0][0], pd_class=prediction_classification, name=name, age=age, image_id=file_name)
         result = client.execute(query)
         connection.commit()
-        print(result)
     except (Exception, Error) as error:
         print("Error while connecting to PostgreSQL", error)
     finally:

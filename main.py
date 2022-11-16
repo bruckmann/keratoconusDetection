@@ -22,7 +22,7 @@ connection_string = os.getenv("CONNECTION_STRING")
 @app.route('/predict/', methods=['POST'])
 async def predict():
     image_to_normalize = request.files.get('image')
-    image_to_blob = request.form.get('image')
+    image_to_blob = request.files.get('image')
     name = request.form.get('name')
     age = request.form.get('age')
 
