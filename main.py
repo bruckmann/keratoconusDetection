@@ -7,6 +7,7 @@ from azure.storage.blob import BlobClient
 
 import prediction as pd
 import db
+import utils
 import blob
 
 
@@ -30,8 +31,9 @@ async def predict():
     classification_result = pd.classify(prediction_result)
 
     try:
-        file_name_on_blob = 'test'
+        file_name_on_blob = utils.format_file_name(name)
         db.insert(name, age, prediction_result, classification_result, file_name_on_blob)
+        blob.insert_on_blob(file_name_on_blob, image_to_blob)
         return jsonify({'prediction_result': str(prediction_result[0][0]), 'classification_result': classification_result})
     except Exception as e:
         print(e)
