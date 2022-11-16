@@ -30,7 +30,7 @@ async def predict():
     classification_result = pd.classify(prediction_result)
 
     try:
-        file_name_on_blob = blob.insert_on_blob(name, image_to_blob)  
+        file_name_on_blob = 'test'
         db.insert(name, age, prediction_result, classification_result, file_name_on_blob)
         return jsonify({'prediction_result': str(prediction_result[0][0]), 'classification_result': classification_result})
     except Exception as e:
