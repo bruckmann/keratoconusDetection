@@ -25,13 +25,13 @@ def db_connect():
         print("Error while connecting to PostgreSQL", error)
 
 
-def insert(name, age, prediction_result, prediction_classification):
+def insert(name, age, prediction_result, prediction_classification, file_name):
     try:
         connection = db_connect()
 
         client = connection.cursor()
-        query = "INSERT INTO prediction_results (prediction_result, classification_result, patient_name, patient_age) VALUES ('{pd_result}', '{pd_class}', '{name}', '{age}')".format(
-            pd_result=prediction_result[0][0], pd_class=prediction_classification, name=name, age=age)
+        query = "INSERT INTO prediction_results (prediction_result, classification_result, patient_name, patient_age, image_id) VALUES ('{pd_result}', '{pd_class}', '{name}', '{age}', '{image_id}')".format(
+            pd_result=prediction_result[0][0], pd_class=prediction_classification, name=name, age=age, image_id=file_name)
         result = client.execute(query)
         connection.commit()
         print(result)
