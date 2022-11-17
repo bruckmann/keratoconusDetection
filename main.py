@@ -22,6 +22,7 @@ connection_string = os.getenv("CONNECTION_STRING")
 @app.route('/predict/', methods=['POST'])
 async def predict():
     image = request.files.get('image')
+    image_id = request.form.get('image_id')
     name = request.form.get('name')
     age = request.form.get('age')
 
@@ -32,12 +33,12 @@ async def predict():
 
 
     try:
-        db.insert(name, age, prediction_result, classification_result, file_name)
+        db.insert(name, age, prediction_result, classification_result, image_id)
         return jsonify({'prediction_result': str(prediction_result[0][0]), 'classification_result': classification_result})
     except Exception as e:
         return jsonify({'error': str(e)})
 
-@app.route('/upload/', methods=['GET'])
+@app.route('/upload/', methods=['POST'])
 def upload_blob():
     image = request.files.get('image')
     name = request.form.get('name')
