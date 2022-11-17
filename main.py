@@ -2,7 +2,6 @@ import os
 
 from azure.storage.blob import BlobClient
 from flask import Flask, jsonify, request
-from flask_cors import CORS, cross_origin
 from azure.storage.blob import BlobClient
 
 import prediction as pd
@@ -11,7 +10,6 @@ import utils
 
 
 app = Flask(__name__)
-CORS(app)
 
 
 container_name = os.getenv("CONTAINER_NAME")
