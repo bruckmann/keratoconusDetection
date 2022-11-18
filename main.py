@@ -52,4 +52,4 @@ def get_model_version():
     return jsonify({'model_version': '1.0.0'})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, ssl_context='adhoc')
+    app.run(host='0.0.0.0', port=3000)
