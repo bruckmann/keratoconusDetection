@@ -3,7 +3,6 @@ import os
 from azure.storage.blob import BlobClient
 from flask import Flask, jsonify, request
 from azure.storage.blob import BlobClient
-from flask_cors import CORS
 
 import prediction as pd
 import db
@@ -11,7 +10,6 @@ import utils
 
 
 app = Flask(__name__)
-CORS(app)
 
 container_name = os.getenv("CONTAINER_NAME")
 connection_string = os.getenv("CONNECTION_STRING")
@@ -48,4 +46,4 @@ def upload_blob():
     return jsonify({'image_id': image_id})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=8000)
